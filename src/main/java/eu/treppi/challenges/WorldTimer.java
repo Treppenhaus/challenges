@@ -12,6 +12,7 @@ public class WorldTimer {
     public String worldname;
     public long time;
     public boolean running;
+    public boolean challengefailed;
 
     public WorldTimer(String name, long time, boolean running) {
         this.worldname = name;
@@ -56,6 +57,11 @@ public class WorldTimer {
     }
 
     public void start(CommandSender who) {
+        if(challengefailed) {
+            who.sendMessage("§cDer Timer kann nicht mehr gestartet werden, da die Challenge fehlgeschlagen ist!");
+            return;
+        }
+
         if(!running) {
             running = true;
             who.sendMessage("§aTimer gestartet!");

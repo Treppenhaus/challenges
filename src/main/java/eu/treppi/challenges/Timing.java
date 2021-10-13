@@ -14,11 +14,16 @@ public class Timing {
     private static ArrayList<WorldTimer> worldtimer = loadFromConfig();
 
 
+    public static void removeTimer(String uuid) {
+        worldtimer.removeIf(wt -> wt.worldname.equals(uuid));
+    }
+
     public static void saveToConfig() {
         FileConfiguration config = getConfig();
         worldtimer.forEach( wt -> {
             config.set("timers."+wt.worldname+".time", wt.time);
             config.set("timers."+wt.worldname+".running", wt.running);
+            config.set("timers."+wt.worldname+".failed", wt.challengefailed);
         });
         try {
             config.save(new File(PATH));
@@ -54,8 +59,10 @@ public class Timing {
 
             long time_ = config.getLong("timers."+key+".time");
             boolean running_ = config.getBoolean("timers."+key+".running");
+            boolean failed = config.getBoolean("timers."+key+".failed");
 
             WorldTimer timer = new WorldTimer(key, time_, running_);
+            timer.challengefailed = failed;
             list.add(timer);
 
         });

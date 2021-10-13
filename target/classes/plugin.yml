@@ -10,3 +10,11 @@ commands:
     description: opens your menu
   timer:
     description: timer command
+  spawn:
+    description: teleportiert dich zum spawn
+    aliases:
+      - lobby
+      - l
+      - hub
+  setspawn:
+    description: setze spawn für /spawn

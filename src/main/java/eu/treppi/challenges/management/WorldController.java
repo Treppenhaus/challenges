@@ -30,6 +30,7 @@ public class WorldController {
         mv.deleteWorld(uuid);
 
         p.sendMessage("§7> Löschvorgang abgeschlossen!");
+        Timing.removeTimer(uuid);
 
     }
 
@@ -41,7 +42,9 @@ public class WorldController {
         MultiverseCore mv = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("multiverse-core");
         mv.getMVWorldManager().addWorld(uuid, World.Environment.NORMAL, generator, WorldType.NORMAL, false, generator);
 
-        Timing.addTimer(new WorldTimer(uuid, 0, false));
+        WorldTimer wt = new WorldTimer(uuid, 0, false);
+        wt.challengefailed = false;
+        Timing.addTimer(wt);
 
         p.sendMessage("§7> §afertig!");
     }
