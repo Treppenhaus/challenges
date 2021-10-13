@@ -1,0 +1,5 @@
+name: Challenges
+version: 0.1
+main: eu.treppi.challenges.core.ChallengesPlugin
+
+author: treppi
