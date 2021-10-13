@@ -3,3 +3,10 @@ version: 0.1
 main: eu.treppi.challenges.core.ChallengesPlugin
 
 author: treppi
+api-version: 1.17
+
+commands:
+  menu:
+    description: opens your menu
+  timer:
+    description: timer command

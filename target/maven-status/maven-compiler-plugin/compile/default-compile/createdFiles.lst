@@ -1,0 +1,8 @@
+eu\treppi\challenges\management\WorldController.class
+eu\treppi\challenges\MenuItems.class
+eu\treppi\challenges\ConfigHelperp.class
+eu\treppi\challenges\Timing.class
+eu\treppi\challenges\Helper.class
+eu\treppi\challenges\WorldTimer.class
+eu\treppi\challenges\commands\MenuCommand.class
+eu\treppi\challenges\commands\TimerCommand.class
