@@ -1,10 +1,7 @@
 package eu.treppi.challenges.core;
 
 import com.onarandombox.MultiverseCore.commands.SpawnCommand;
-import eu.treppi.challenges.GameController;
-import eu.treppi.challenges.LobbyTeleport;
-import eu.treppi.challenges.SetspawnCommand;
-import eu.treppi.challenges.Timing;
+import eu.treppi.challenges.*;
 import eu.treppi.challenges.commands.MenuCommand;
 import eu.treppi.challenges.commands.TimerCommand;
 import org.bukkit.Bukkit;
@@ -43,6 +40,7 @@ public class ChallengesPlugin extends JavaPlugin {
         pm.registerEvents(new MenuCommand(), this);
         pm.registerEvents(new GameController(), this);
         pm.registerEvents(new LobbyTeleport(), this);
+        pm.registerEvents(new ChallengeWon(), this);
     }
 
     public static void send(Player p, String msg) {

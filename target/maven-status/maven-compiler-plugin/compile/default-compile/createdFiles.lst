@@ -1,4 +1,5 @@
 eu\treppi\challenges\management\WorldController.class
+eu\treppi\challenges\ChallengeWon.class
 eu\treppi\challenges\ConfigHelperp.class
 eu\treppi\challenges\SetspawnCommand.class
 eu\treppi\challenges\Timing.class
@@ -6,6 +7,7 @@ eu\treppi\challenges\commands\TimerCommand.class
 eu\treppi\challenges\LobbyTeleport.class
 eu\treppi\challenges\MenuItems.class
 eu\treppi\challenges\GameController.class
+eu\treppi\challenges\Playerdata.class
 eu\treppi\challenges\Helper.class
 eu\treppi\challenges\WorldTimer.class
 eu\treppi\challenges\commands\MenuCommand.class

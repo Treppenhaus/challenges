@@ -18,7 +18,7 @@ public class TimerCommand implements CommandExecutor {
             String uuid = p.getUniqueId().toString();
             World w = p.getLocation().getWorld();
 
-            if(!w.getName().equals(uuid)) {
+            if(!w.getName().contains(uuid)) {
                 p.sendMessage("§cDiese Welt gehört dir nicht!");
                 return false;
             }

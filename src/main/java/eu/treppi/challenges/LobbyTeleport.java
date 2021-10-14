@@ -28,27 +28,6 @@ public class LobbyTeleport implements Listener, CommandExecutor {
         World world = newLocation.getWorld();
 
         WorldTimer wt = Timing.getTimer(oldLocation.getWorld());
-        if(wt != null) {
-            if(wt.getWorld().getPlayers().stream().noneMatch(pl -> pl.getGameMode() == GameMode.SURVIVAL)) {
-                ChallengesPlugin.send(p, "§cDa du der letzte Spieler warst, der die Welt verlassen hat, wurde der Timer gestoppt.");
-                wt.stop(p);
-            }
-
-            wt = Timing.getTimer(newLocation.getWorld());
-            if(wt.getWorld().getPlayers().stream().filter(pl -> pl.getGameMode() == GameMode.SURVIVAL).count() == 1) {
-                if(!wt.challengefailed) {
-                    ChallengesPlugin.send(p, "§aDa du der erste Spieler in dieser Welt bist, wurde der Timer gestartet!");
-                    p.setGameMode(GameMode.SURVIVAL);
-                    wt.start(p);
-                }
-                else {
-                    p.sendTitle("", "§c✘", 10, 20, 10);
-                    p.setGameMode(GameMode.SPECTATOR);
-                }
-
-
-            }
-        }
 
         if(world.getName().equalsIgnoreCase("lobby")) {
             p.setGameMode(GameMode.ADVENTURE);
@@ -61,7 +40,15 @@ public class LobbyTeleport implements Listener, CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if(sender instanceof Player) {
-            ((Player) sender).teleport(getLobbyLocation());
+            Player p = (Player) sender;
+
+            WorldTimer timer = Timing.getTimer(p.getLocation().getWorld());
+            if(timer.running) {
+                Playerdata.saveLocation(p, p.getLocation());
+            }
+            p.teleport(getLobbyLocation());
+
+
         }
         return false;
     }

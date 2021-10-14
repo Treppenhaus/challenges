@@ -3,6 +3,7 @@ package eu.treppi.challenges;
 import eu.treppi.challenges.core.ChallengesPlugin;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,7 +29,8 @@ public class GameController implements Listener {
 
                 pl.setGameMode(GameMode.SPECTATOR);
                 ChallengesPlugin.send(pl, "§cDie Challenge ist §4fehlgeschlagen!");
-                pl.sendTitle("", "§c✘", 3, 25, 5);
+                pl.sendTitle("§cSchade", "§7Die Challenge ist leider fehlgeschlagen!", 20, 50, 20);
+                p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0, 1);
             });
         }
     }

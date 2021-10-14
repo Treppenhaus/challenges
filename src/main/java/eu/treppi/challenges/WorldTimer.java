@@ -7,6 +7,7 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 public class WorldTimer {
     public String worldname;
@@ -21,14 +22,20 @@ public class WorldTimer {
     }
 
     public void tick() {
-        if(running)
-            time += 1000;
+        if(running) {
+            // check for players
+            int players = Bukkit.getWorlds().stream().filter(world -> world.getName().contains(worldname)).mapToInt(world -> world.getPlayers().size()).sum();
+            if(players > 0) {
+                time += 1000;
+            }
+        }
     }
 
     public void display() {
-        World w = getWorld();
-        w.getPlayers().forEach(p -> {
-            p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(getDisplay()));
+        getWorlds().forEach(w -> {
+            w.getPlayers().forEach(p -> {
+                p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(getDisplay()));
+            });
         });
     }
 
@@ -52,29 +59,29 @@ public class WorldTimer {
         return "§7Timer: "+ (running ? "§e" : "§c") + timestring + (running ? "" : " §7(GESTOPPT)");
     }
 
-    public World getWorld() {
-        return Bukkit.getWorld(worldname);
+    public Stream<World> getWorlds() {
+        return Bukkit.getWorlds().stream().filter(world -> world.getName().contains(worldname));
     }
 
     public void start(CommandSender who) {
         if(challengefailed) {
-            who.sendMessage("§cDer Timer kann nicht mehr gestartet werden, da die Challenge fehlgeschlagen ist!");
+            if(who != null) who.sendMessage("§cDer Timer kann nicht mehr gestartet werden, da die Challenge fehlgeschlagen ist!");
             return;
         }
 
         if(!running) {
             running = true;
-            who.sendMessage("§aTimer gestartet!");
+            if(who != null) who.sendMessage("§aTimer gestartet!");
         }
-        else who.sendMessage("§6Der Timer ist bereits gestartet!");
+        else if(who != null) who.sendMessage("§6Der Timer ist bereits gestartet!");
     }
 
     public void stop(CommandSender who) {
         if(running) {
             running = false;
-            who.sendMessage("§aTimer §cgestoppt§a!");
+            if(who != null) who.sendMessage("§aTimer §cgestoppt§a!");
         }
-        else who.sendMessage("§cDer Timer war bereits gestoppt!");
+        else if(who != null) who.sendMessage("§cDer Timer war bereits gestoppt!");
     }
 
     public void toggle(CommandSender who) {

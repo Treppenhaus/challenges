@@ -45,7 +45,7 @@ public class Timing {
 
     public static WorldTimer getTimer(World world) {
         for(WorldTimer wt : worldtimer)
-            if(wt.worldname.equals(world.getName()))
+            if(world.getName().contains(wt.worldname))
                 return wt;
 
         return null;
