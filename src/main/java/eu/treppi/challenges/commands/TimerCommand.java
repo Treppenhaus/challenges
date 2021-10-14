@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class TimerCommand implements CommandExecutor {
-    private static final String SYNTAX = "§e/timer toggle|stop|start";
+    private static final String SYNTAX = "§e/timer toggle | stop | start";
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if(sender instanceof Player) {

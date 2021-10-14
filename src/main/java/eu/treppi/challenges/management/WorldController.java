@@ -4,13 +4,19 @@ import com.onarandombox.MultiverseCore.MultiverseCore;
 import eu.treppi.challenges.Playerdata;
 import eu.treppi.challenges.Timing;
 import eu.treppi.challenges.WorldTimer;
+import eu.treppi.challenges.szenario.Szenario;
+import eu.treppi.challenges.szenario.WorldborderSzenario;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+
 public class WorldController {
+
+    public static ArrayList<Szenario> szenarios = new ArrayList<>();
 
     public static World getWorld(Player p) {
         String uuid = p.getUniqueId().toString();
@@ -53,6 +59,7 @@ public class WorldController {
 
         WorldTimer wt = new WorldTimer(uuid, 0, false);
         wt.challengefailed = false;
+        wt.szenarioname = "worldborder";
         Timing.addTimer(wt);
 
         // link worlds
@@ -63,6 +70,7 @@ public class WorldController {
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mvnp link end "+uuid+"_end "+uuid);
 
         //link inventories
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mvinv deletegroup "+uuid);
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mvinv creategroup "+uuid);
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mvinv addworld "+uuid+" "+uuid);
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mvinv addworld "+uuid+"_nether "+uuid);
@@ -92,5 +100,12 @@ public class WorldController {
 
         World w = getWorld(p);
         p.teleport(w.getSpawnLocation());
+        p.setHealth(20);
+        p.setMaxHealth(20);
+        p.getInventory().clear();
+        p.getActivePotionEffects().forEach(effect -> p.removePotionEffect(effect.getType()));
+        p.setFoodLevel(20);
+        p.setLevel(0);
+        WorldborderSzenario.onEnterFirstTime(p, w);
     }
 }

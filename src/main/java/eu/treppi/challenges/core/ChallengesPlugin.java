@@ -4,6 +4,8 @@ import com.onarandombox.MultiverseCore.commands.SpawnCommand;
 import eu.treppi.challenges.*;
 import eu.treppi.challenges.commands.MenuCommand;
 import eu.treppi.challenges.commands.TimerCommand;
+import eu.treppi.challenges.szenario.SzenarioList;
+import eu.treppi.challenges.szenario.WorldborderSzenario;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -15,6 +17,10 @@ public class ChallengesPlugin extends JavaPlugin {
         getLogger().info("Challenges Plugin enabled!");
         registerCommands();
         registerListeners();
+
+
+
+
         instance = this;
 
         Timing.timingThread();
@@ -41,6 +47,9 @@ public class ChallengesPlugin extends JavaPlugin {
         pm.registerEvents(new GameController(), this);
         pm.registerEvents(new LobbyTeleport(), this);
         pm.registerEvents(new ChallengeWon(), this);
+        pm.registerEvents(new Build(), this);
+        pm.registerEvents(new WorldborderSzenario(), this);
+        WorldborderSzenario.mobSpawns();
     }
 
     public static void send(Player p, String msg) {

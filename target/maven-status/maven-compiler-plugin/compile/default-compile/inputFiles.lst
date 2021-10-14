@@ -1,7 +1,10 @@
 G:\treppi\git\challenges\src\main\java\eu\treppi\challenges\core\ChallengesPlugin.java
 G:\treppi\git\challenges\src\main\java\eu\treppi\challenges\commands\MenuCommand.java
+G:\treppi\git\challenges\src\main\java\eu\treppi\challenges\szenario\Szenario.java
 G:\treppi\git\challenges\src\main\java\eu\treppi\challenges\ChallengeWon.java
 G:\treppi\git\challenges\src\main\java\eu\treppi\challenges\LobbyTeleport.java
+G:\treppi\git\challenges\src\main\java\eu\treppi\challenges\szenario\SzenarioList.java
+G:\treppi\git\challenges\src\main\java\eu\treppi\challenges\Playerdata.java
 G:\treppi\git\challenges\src\main\java\eu\treppi\challenges\management\WorldController.java
 G:\treppi\git\challenges\src\main\java\eu\treppi\challenges\Helper.java
 G:\treppi\git\challenges\src\main\java\eu\treppi\challenges\MenuItems.java
@@ -9,5 +12,7 @@ G:\treppi\git\challenges\src\main\java\eu\treppi\challenges\GameController.java
 G:\treppi\git\challenges\src\main\java\eu\treppi\challenges\SetspawnCommand.java
 G:\treppi\git\challenges\src\main\java\eu\treppi\challenges\ConfigHelperp.java
 G:\treppi\git\challenges\src\main\java\eu\treppi\challenges\Timing.java
+G:\treppi\git\challenges\src\main\java\eu\treppi\challenges\szenario\WorldborderSzenario.java
 G:\treppi\git\challenges\src\main\java\eu\treppi\challenges\WorldTimer.java
+G:\treppi\git\challenges\src\main\java\eu\treppi\challenges\Build.java
 G:\treppi\git\challenges\src\main\java\eu\treppi\challenges\commands\TimerCommand.java

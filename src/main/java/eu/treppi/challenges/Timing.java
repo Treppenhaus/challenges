@@ -24,6 +24,7 @@ public class Timing {
             config.set("timers."+wt.worldname+".time", wt.time);
             config.set("timers."+wt.worldname+".running", wt.running);
             config.set("timers."+wt.worldname+".failed", wt.challengefailed);
+            config.set("timers."+wt.worldname+".szenario", wt.szenarioname);
         });
         try {
             config.save(new File(PATH));
@@ -60,9 +61,11 @@ public class Timing {
             long time_ = config.getLong("timers."+key+".time");
             boolean running_ = config.getBoolean("timers."+key+".running");
             boolean failed = config.getBoolean("timers."+key+".failed");
+            String sz = config.getString("timers."+key+".szenario");
 
             WorldTimer timer = new WorldTimer(key, time_, running_);
             timer.challengefailed = failed;
+            timer.szenarioname = sz;
             list.add(timer);
 
         });

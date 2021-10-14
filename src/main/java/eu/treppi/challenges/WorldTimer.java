@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 public class WorldTimer {
-    public String worldname;
+    public String worldname, szenarioname;
     public long time;
     public boolean running;
     public boolean challengefailed;
@@ -56,7 +56,7 @@ public class WorldTimer {
                 + seconds + "s";
 
 
-        return "§7Timer: "+ (running ? "§e" : "§c") + timestring + (running ? "" : " §7(GESTOPPT)");
+        return "§7Timer: "+ (running ? "§e§l" : "§c") + timestring + (running ? "§r" : " §7(GESTOPPT)");
     }
 
     public Stream<World> getWorlds() {
