@@ -49,7 +49,6 @@ public class ChallengesPlugin extends JavaPlugin {
         pm.registerEvents(new ChallengeWon(), this);
         pm.registerEvents(new Build(), this);
         pm.registerEvents(new WorldborderSzenario(), this);
-        WorldborderSzenario.mobSpawns();
     }
 
     public static void send(Player p, String msg) {

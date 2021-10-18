@@ -1,16 +1,24 @@
 package eu.treppi.challenges.szenario;
 
+import eu.treppi.challenges.ConfigHelperp;
+import eu.treppi.challenges.Playerdata;
 import eu.treppi.challenges.Timing;
 import eu.treppi.challenges.WorldTimer;
-import eu.treppi.challenges.core.ChallengesPlugin;
-import org.bukkit.*;
-import org.bukkit.entity.EntityType;
+import eu.treppi.challenges.management.WorldController;
+import net.minecraft.network.protocol.game.ClientboundInitializeBorderPacket;
+import net.minecraft.network.protocol.game.PacketPlayOutWorldEvent;
+import net.minecraft.world.level.border.WorldBorder;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
 
-import java.util.Random;
+import java.awt.*;
 
 public class WorldborderSzenario implements Listener {
 
@@ -21,54 +29,25 @@ public class WorldborderSzenario implements Listener {
         WorldTimer timer = Timing.getTimer(w);
 
         if(timer.szenarioname.equalsIgnoreCase(name)) {
-            WorldBorder border = w.getWorldBorder();
-            border.setCenter(p.getLocation().getBlock().getLocation());
-            int r = p.getLevel();
-            border.setSize(r, 1);
+            int r = Math.max(1, p.getLevel());
+            Location center = p.getLocation();
+            setWorldborderCenter(p, center);
+            sendWorldBorder(p, r, r, center);
         }
 
     }
 
-    public static void mobSpawns() {
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(ChallengesPlugin.getInstance(), () -> {
-            Bukkit.getWorlds().stream().filter(w -> {
+    public static void sendWorldBorder(Player player, double size_before, double size, Location centerLocation) {
+        WorldBorder worldBorder = new WorldBorder();
+        worldBorder.world = ((CraftWorld) centerLocation.getWorld()).getHandle();
+        worldBorder.setCenter(centerLocation.getBlockX() + 0.5, centerLocation.getBlockZ() + 0.5);
 
-                WorldTimer timer = Timing.getTimer(w);
-                try {
-                    if(timer.szenarioname.equalsIgnoreCase(name))
-                        return true;
-                }catch (Exception e) {
+        worldBorder.setWarningDistance(0);
+        worldBorder.setWarningTime(0);
+        worldBorder.transitionSizeBetween(size - 1d, size, 20);
+        worldBorder.setSize(size);
 
-                }
-                return false;
-
-            }).forEach(w -> {
-                w.getPlayers().forEach(p -> {
-                    int x = randInt(10, 20);
-                    int z = randInt(10, 20);
-                    if(new Random().nextBoolean()) x *= -1;
-                    if(new Random().nextBoolean()) z *= -1;
-
-                    int y = 256;
-                    for(int asd = 0; w.getBlockAt(x, y, z).getType() != Material.AIR; y--) {}
-                    Location spawn = p.getLocation().add(x, y, z);
-
-                    EntityType[] types = new EntityType[] {
-                            EntityType.ZOMBIE,
-                            EntityType.CREEPER,
-                            EntityType.SKELETON
-                    };
-
-                    w.spawnEntity(spawn, types[randInt(0, types.length - 1)]);
-                    p.sendMessage("spawned something at "+spawn.getX()+ " "+spawn.getY() + " "+spawn.getZ());
-
-                });
-            });
-        }, 20L, 20L);
-    }
-
-    public static int randInt(int min, int max) {
-        return new Random().nextInt((max - min) + 1) + min;
+        ((CraftPlayer) player).getHandle().b.sendPacket(new ClientboundInitializeBorderPacket(worldBorder));
     }
 
     @EventHandler
@@ -78,12 +57,21 @@ public class WorldborderSzenario implements Listener {
         WorldTimer timer = Timing.getTimer(w);
 
         if(timer.szenarioname.equals(name)) {
-            int r = p.getLevel();
-            WorldBorder border = w.getWorldBorder();
-
-            border.setSize(r, 1);
+            int r = Math.max(1, p.getLevel());
+            Location center = getWorldborderCenter(p);
+            sendWorldBorder(p, r - 1, r, center);
         }
     }
 
+    public static void setWorldborderCenter(Player p, Location loc) {
+        FileConfiguration plaeyrdata = Playerdata.getData(p);
+        ConfigHelperp.saveLocation(loc, plaeyrdata, "worldborder.center");
+        Playerdata.saveData(p, plaeyrdata);
+    }
+
+    public static Location getWorldborderCenter(Player p) {
+        FileConfiguration plaeyrdata = Playerdata.getData(p);
+        return ConfigHelperp.readLocation(plaeyrdata, "worldborder.center");
+    }
 
 }
