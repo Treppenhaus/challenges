@@ -16,9 +16,8 @@ import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
-
-import java.awt.*;
 
 public class WorldborderSzenario implements Listener {
 
@@ -32,15 +31,17 @@ public class WorldborderSzenario implements Listener {
             int r = Math.max(1, p.getLevel());
             Location center = p.getLocation();
             setWorldborderCenter(p, center);
-            sendWorldBorder(p, r, r, center);
+            sendWorldBorder(p, r, center);
+
+            w.setTime(12000L);
         }
 
     }
 
-    public static void sendWorldBorder(Player player, double size_before, double size, Location centerLocation) {
+    public static void sendWorldBorder(Player player, double size, Location centerLocation) {
         WorldBorder worldBorder = new WorldBorder();
         worldBorder.world = ((CraftWorld) centerLocation.getWorld()).getHandle();
-        worldBorder.setCenter(centerLocation.getBlockX() + 0.5, centerLocation.getBlockZ() + 0.5);
+        worldBorder.setCenter(centerLocation.getBlockX(), centerLocation.getBlockZ());
 
         worldBorder.setWarningDistance(0);
         worldBorder.setWarningTime(0);
@@ -48,6 +49,12 @@ public class WorldborderSzenario implements Listener {
         worldBorder.setSize(size);
 
         ((CraftPlayer) player).getHandle().b.sendPacket(new ClientboundInitializeBorderPacket(worldBorder));
+    }
+
+    public static void sendWorldBorder(Player p) {
+        int r = Math.max(1, p.getLevel());
+        Location center = getWorldborderCenter(p);
+        sendWorldBorder(p, r, center);
     }
 
     @EventHandler
@@ -59,7 +66,21 @@ public class WorldborderSzenario implements Listener {
         if(timer.szenarioname.equals(name)) {
             int r = Math.max(1, p.getLevel());
             Location center = getWorldborderCenter(p);
-            sendWorldBorder(p, r - 1, r, center);
+            sendWorldBorder(p, r, center);
+        }
+    }
+
+    @EventHandler
+    public void onWorldChange(PlayerChangedWorldEvent e) {
+        Player p = e.getPlayer();
+        World w = p.getWorld();
+
+        WorldTimer timer = Timing.getTimer(w);
+
+        if(timer.szenarioname.equals(name)) {
+            if(w.getName().contains(p.getUniqueId().toString())) {
+                sendWorldBorder(p);
+            }
         }
     }
 
